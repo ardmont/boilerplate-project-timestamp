@@ -31,7 +31,7 @@ app.get('/api/timestamp/:date_string?', function (req, res) {
     dateString = Number(dateString)
   }
 
-  var date = new Date(dateString)
+  var date = dateString ? new Date(dateString) : new Date()
   res.json({ 'unix': date.getTime(), 'utc': date.toUTCString() })
 })
 // listen for requests :)
