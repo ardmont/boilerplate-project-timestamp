@@ -25,14 +25,25 @@ app.get('/api/hello', function (req, res) {
 
 app.get('/api/timestamp/:date_string?', function (req, res) {
   var dateString = req.params.date_string
+  // Matchs for only numbers
   var unixRegex = /^\d+$/
 
+  // Checks if date string is unix and converts it to number
   if (unixRegex.test(dateString)) {
     dateString = Number(dateString)
   }
 
+  // Checks if dateString is not empty and returns the informed date, otherwise, returns the current date.
   var date = dateString ? new Date(dateString) : new Date()
-  res.json({ 'unix': date.getTime(), 'utc': date.toUTCString() })
+
+  var unix = date.getTime()
+
+  // Verifies if unix is not null. When it is null, the informed date is not valid.
+  if (unix) {
+    res.json({ 'unix': date.getTime(), 'utc': date.toUTCString() })
+  } else {
+    res.json({ 'error': 'Invalid Date' })
+  }
 })
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
